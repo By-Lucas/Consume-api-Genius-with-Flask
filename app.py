@@ -8,7 +8,7 @@ app = Flask(__name__, static_folder='static')
 class Config:
     # adicione após as outras chaves
     MONGODB_HOST = os.getenv('MONGODB_URI')
-        
+
 
 @app.route("/")
 def index():
