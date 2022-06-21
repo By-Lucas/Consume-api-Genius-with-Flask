@@ -7,7 +7,7 @@ from flask import request, jsonify
 from dotenv import load_dotenv
 from os.path import join, dirname
 
-env_path = os.path.dirname(__file__).replace('/controllers', '')
+env_path = os.path.dirname(__file__).replace('controllers', '')
 dotenv_path = join(env_path, '.env')
 load_dotenv(dotenv_path)
 
@@ -45,14 +45,15 @@ class GeniusConsume(Resource):
         if about['id_transaction'] == '':
             return jsonify(about)
 
+
         dynamodb = boto3.resource(
             'dynamodb',
             region_name='us-east-2',
-            aws_access_key_id=os.environ.get("AWS_ACCESS_KEY_ID"),
-            aws_secret_access_key=os.environ.get("AWS_SECRET_ACCESS_KEY")
+            aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
+            aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY")
             )
 
-        table = dynamodb.Table('artist')
+        table = dynamodb.Table('musica')
         
         try:
             table.put_item(
@@ -62,8 +63,8 @@ class GeniusConsume(Resource):
                     'songs': hits
                 }
             )
-            print('PRINTANDO TABELA', table)
-        except:
-            print('Deu erro')
+            print('Items inserido com sucesso')
+        except :
+            print('Deu erro ao inserir items')
 
         return jsonify(about)
