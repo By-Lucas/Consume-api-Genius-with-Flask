@@ -14,7 +14,6 @@ load_dotenv(dotenv_path)
 
 class GeniusConsume(Resource):
 
-
     def search_artist(self, artist):
         base_url = "http://api.genius.com"
         headers = {'Authorization': 'Bearer {}'.format(os.environ.get("GENIUS_TOKEN"))}
@@ -26,11 +25,11 @@ class GeniusConsume(Resource):
         list_songs = []
         for song in info_artist['response']['hits']:
             list_songs.append(song['result']['title'])
+        print('Songs',list_songs)
         return list_songs
 
 
     def get(self, artist):
-
         res = self.search_artist(artist)
 
         id_transaction = ''
@@ -55,14 +54,18 @@ class GeniusConsume(Resource):
             aws_secret_access_key=os.environ.get("AWS_SECRET_ACCESS_KEY")
             )
 
-        table = dynamodb.Table('tb_searches')
-
-        table.put_item(
-            Item={
-                'id_transaction': id_transaction,
-                'artist': artist,
-                'songs': hits
-            }
-        )
+        table = dynamodb.Table('artist')
+        
+        try:
+            table.put_item(
+                Item={
+                    'id_transaction': id_transaction,
+                    'artist': artist,
+                    'songs': hits
+                }
+            )
+            print('PRINTANDO TABELA', table)
+        except:
+            print('Deu erro')
 
         return jsonify(about)

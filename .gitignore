@@ -1,2 +1,6 @@
+__pycache__/
+.pynb
 venv
-*rar
+.vscode
+rootkey.csv
+*consume-genius-api-master.zip
