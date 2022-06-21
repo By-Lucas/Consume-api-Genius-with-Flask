@@ -13,7 +13,7 @@ def put_user(name, occupation, hobby, dynamodb=None):
             )
 
 
-    table = dynamodb.Table('artistas')
+    table = dynamodb.Table('Artistas')
     response = table.put_item(
         Item={
             'id_transaction': name,

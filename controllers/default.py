@@ -49,19 +49,22 @@ class GeniusConsume(Resource):
 
         dynamodb = boto3.resource(
             'dynamodb',
-            region_name='us-east-2',
+            region_name='us-east-1',
             aws_access_key_id=os.environ.get("AWS_ACCESS_KEY_ID"),
             aws_secret_access_key=os.environ.get("AWS_SECRET_ACCESS_KEY")
             )
 
-        table = dynamodb.Table('musica')
-        
-        table.put_item(
-            Item={
-                'id_transaction': id_transaction,
-                'artist': artist,
-                'songs': hits
-            }
-        )
+        table = dynamodb.Table('Artistas')
+        try:
+            table.put_item(
+                Item={
+                    'id_transaction': id_transaction,
+                    'artist': artist,
+                    'songs': hits
+                }
+            )
+            print('Dados inseridos')
+        except:
+            print('Dados nao inseridos')
 
         return jsonify(about)
