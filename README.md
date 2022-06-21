@@ -30,7 +30,9 @@ python -m run
 
 ## Consultar diretamente da api
 
-*`basta usar da forma mostrada abaixo.`*
+**basta usar da forma mostrada abaixo.**
 
-`http://127.0.0.1:5000/artista/Nome Artista`
+~~~ shell
+http://127.0.0.1:5000/artista/Nome_do_artista
+~~~
 
