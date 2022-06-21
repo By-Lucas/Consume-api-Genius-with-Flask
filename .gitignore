@@ -4,4 +4,3 @@ venv
 .vscode
 .env
 rootkey.csv
-*consume-genius-api-master.zip
