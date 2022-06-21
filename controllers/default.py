@@ -4,6 +4,7 @@ import uuid
 import os
 from flask_restful import Resource, reqparse
 from flask import request, jsonify
+from flask_dynamo import Dynamo 
 from dotenv import load_dotenv
 from os.path import join, dirname
 
@@ -16,7 +17,7 @@ class GeniusConsume(Resource):
 
     def search_artist(self, artist):
         base_url = "http://api.genius.com"
-        headers = {'Authorization': 'Bearer {}'.format(os.getenv("GENIUS_TOKEN"))}
+        headers = {'Authorization': 'Bearer {}'.format(os.environ.get("GENIUS_TOKEN"))}
         search_url = "{}/search?q={}".format(base_url, artist)
         return requests.get(search_url, headers=headers).json()
 
@@ -49,22 +50,18 @@ class GeniusConsume(Resource):
         dynamodb = boto3.resource(
             'dynamodb',
             region_name='us-east-2',
-            aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
-            aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY")
+            aws_access_key_id=os.environ.get("AWS_ACCESS_KEY_ID"),
+            aws_secret_access_key=os.environ.get("AWS_SECRET_ACCESS_KEY")
             )
 
         table = dynamodb.Table('musica')
         
-        try:
-            table.put_item(
-                Item={
-                    'id_transaction': id_transaction,
-                    'artist': artist,
-                    'songs': hits
-                }
-            )
-            print('Items inserido com sucesso')
-        except :
-            print('Deu erro ao inserir items')
+        table.put_item(
+            Item={
+                'id_transaction': id_transaction,
+                'artist': artist,
+                'songs': hits
+            }
+        )
 
         return jsonify(about)

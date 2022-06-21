@@ -1,7 +1,7 @@
-import os.path
+import os
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
-DEBUG=True
+DEBUG=os.environ.get('DEBUG')
 
 
