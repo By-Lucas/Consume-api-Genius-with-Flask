@@ -1,16 +1,36 @@
-# Consumindo API com Flask
+# CONSUMIR API GENIUS COM PYTHON(FLASK)
 
-Instale, crie e ative a virtualenv em sua máquina e instale as bibliotecas.
+## Instalar criar e ativar ambiente virtual
+~~~ shell
+pip install virtualenv
+~~~
+~~~ shell
+python -m venv venv
+~~~
+~~~ shell
+venv/scripts/activate
+~~~
 
-Para fazer a instalação use o comando: `pip install -r requirements.txt`
+## Instalar Bibliotecas
+~~~ shell
+pip install -r requirements.txt
+~~~
 
-Existe um arquivo chamado exemple.env. Edite esse arquivo com suas credenciais AWS e Genius e renomei para apenas `.env`. Esse arquivo é o responsavel por deixar suas chaves de acesso seguras!
+## Rodar aplicação e informações
+**No arquivo `teste.env` voce deve alterar-lo para `.env` e colocar as dependências dentro.**
+- `Criar Token no Genius e adcionar na parte GENIUS_TOKEN=`
+- `Criar iD de segurança na AWS e adcionar no campo AWS_ACCESS_KEY_ID=`
+- `pegar a  chave de acesso na AWS e adcionar no campo AWS_SECRET_ACCESS_KEY=`
+- *O arquivo .env mantém as informações dentro de sí mais seguras, por isso recomendado usar alguns métodos como `(Decouple, os.getenv(), os.environ.get().`*
 
-Para rodar a aplicação, use `python -m run`
+**Se tudo estiver OK, é só rodar o comando abaixo no terminal.**
+~~~ shell
+python -m run
+~~~
 
-## consulta get
+## Consultar diretamente da api
 
-Para fazer uma consulta buscando por nome do artista:
+*`basta usar da forma mostrada abaixo.`*
 
 `http://127.0.0.1:5000/artista/Nome Artista`
 

@@ -16,10 +16,9 @@ class GeniusConsume(Resource):
 
     def search_artist(self, artist):
         base_url = "http://api.genius.com"
-        headers = {'Authorization': 'Bearer {}'.format(os.environ.get("GENIUS_TOKEN"))}
+        headers = {'Authorization': 'Bearer {}'.format(os.getenv("GENIUS_TOKEN"))}
         search_url = "{}/search?q={}".format(base_url, artist)
         return requests.get(search_url, headers=headers).json()
-
 
     def top_hits(self, info_artist):
         list_songs = []
@@ -27,7 +26,6 @@ class GeniusConsume(Resource):
             list_songs.append(song['result']['title'])
         print('Songs',list_songs)
         return list_songs
-
 
     def get(self, artist):
         res = self.search_artist(artist)
