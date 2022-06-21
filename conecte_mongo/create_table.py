@@ -1,44 +1,41 @@
 import boto3
 import os
 
-def create_users_table(dynamodb=None):
-    if not dynamodb:
-        dynamodb = boto3.resource(
-            'dynamodb', 
-            region_name='us-east-2',
-            aws_access_key_id=os.environ.get("AWS_ACCESS_KEY_ID"),
-            aws_secret_access_key=os.environ.get("AWS_SECRET_ACCESS_KEY"))
- 
-    table = dynamodb.create_table(
-        TableName='Users',
-        KeySchema=[
-            {
-                'AttributeName': 'name',
-                'KeyType': 'HASH'  # Partition key
-            },
-            {
-                'AttributeName': 'occupation',
-                'KeyType': 'RANGE'  # Sort key
-            }
+
+def create_dax_table(dyn_resource=None):
+    """
+    Creates a DynamoDB table.
+    :param dyn_resource: Either a Boto3 or DAX resource.
+    :return: The newly created table.
+    """
+    if dyn_resource is None:
+        dyn_resource = boto3.resource('dynamodb',
+            region_name='us-east-1',
+            aws_access_key_id="AKIAUMCUSPZCS7FYFQP6",
+            aws_secret_access_key="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")
+
+    table_name = 'Artistas'
+    params = {
+        'TableName': table_name,
+        'KeySchema': [
+            {'AttributeName': 'id_transaction', 'KeyType': 'HASH'},
+            {'AttributeName': 'artist', 'KeyType': 'RANGE'},
         ],
-        AttributeDefinitions=[
-            {
-                'AttributeName': 'name',
-                'AttributeType': 'S'
-            },
-            {
-                'AttributeName': 'occupation',
-                'AttributeType': 'S'
-            },
- 
+        'AttributeDefinitions': [
+            {'AttributeName': 'id_transaction', 'AttributeType': 'S'},
+            {'AttributeName': 'artist', 'AttributeType': 'S'},
         ],
-        ProvisionedThroughput={
-            'ReadCapacityUnits': 1,
-            'WriteCapacityUnits': 1
+        'ProvisionedThroughput': {
+            'ReadCapacityUnits': 10,
+            'WriteCapacityUnits': 10
         }
-    )
+    }
+    table = dyn_resource.create_table(**params)
+    print(f"Creating {table_name}...")
+    table.wait_until_exists()
     return table
- 
+
+
 if __name__ == '__main__':
-    users_table = create_users_table()
-    print("Table status:", users_table.table_status)
+    dax_table = create_dax_table()
+    print(f"Created table.")

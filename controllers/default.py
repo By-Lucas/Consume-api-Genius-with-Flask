@@ -1,3 +1,4 @@
+from tkinter.tix import InputOnly
 import boto3
 import requests
 import uuid
@@ -7,6 +8,8 @@ from flask import request, jsonify
 from flask_dynamo import Dynamo 
 from dotenv import load_dotenv
 from os.path import join, dirname
+from models.models import add_data
+
 
 env_path = os.path.dirname(__file__).replace('controllers', '')
 dotenv_path = join(env_path, '.env')
@@ -49,19 +52,25 @@ class GeniusConsume(Resource):
 
         dynamodb = boto3.resource(
             'dynamodb',
-            region_name='us-east-2',
+            region_name='us-east-1',
             aws_access_key_id=os.environ.get("AWS_ACCESS_KEY_ID"),
             aws_secret_access_key=os.environ.get("AWS_SECRET_ACCESS_KEY")
             )
 
-        table = dynamodb.Table('musica')
-        
-        table.put_item(
-            Item={
-                'id_transaction': id_transaction,
-                'artist': artist,
-                'songs': hits
-            }
-        )
+        table = dynamodb.Table('Artistas')
+
+        data_base = add_data(id_transaction, artist, hits)
+
+        try:
+            table.put_item(
+                Item={
+                    'id_transaction': id_transaction,
+                    'artist': artist,
+                    'songs': hits
+                }
+            )
+            print('Dados inseridos')
+        except:
+            print('Dados nao inseridos')
 
         return jsonify(about)
