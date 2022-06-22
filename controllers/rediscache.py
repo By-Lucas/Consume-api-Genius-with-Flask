@@ -5,6 +5,7 @@ import datetime
 class RedisCache:
     def __init__(self):
         """Iniciar a Classe Cache Redis"""
+
         self.redis = Redis(
             host='localhost',
             port='6379',

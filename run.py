@@ -4,6 +4,7 @@ from flask_restful import Resource, Api
 from models.dynamo_db import DynamoDB
 import json
 from controllers.rediscache import RedisCache
+from controllers.env_config import DEBUG, FLASK_HOST, FLASK_PORT
 
 app = Flask(__name__)
 api = Api(app)
@@ -34,7 +35,6 @@ class Artist(Resource):
             songs_list = self.cache.get_cache(name)
             print()
             response = {f'As 10 musicas mais populares de {name}': eval(songs_list),
-                        'id':self.db.key,
                         'cache': cache_query_string}
 
         #se o registro ainda não existir no cache crie cache e salve no dynamodb
@@ -42,7 +42,6 @@ class Artist(Resource):
             popular_musics = self.songs_api.get_lyrics(name, music_number)
             self.db.insert_artists_songs(name, popular_musics)
             response = {f'As 10 musicas mais populares de {name}': popular_musics,
-                        'id':self.db.key,
                         'cache': cache_query_string}
             self.cache.add_cache(name, str(popular_musics))
 
@@ -55,11 +54,9 @@ class Artist(Resource):
         else:
             print('cache=True, Utilizando os dados em cache')
             self.cache.get_cache(name)
-
         return response
-
 
 api.add_resource(Artist, '/artista/<name>')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(FLASK_HOST, FLASK_PORT, DEBUG)
