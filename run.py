@@ -32,7 +32,9 @@ class Artist(Resource):
         #se o registro já existir no cache selecione-os
         if self.cache.registry_exists(name):
             songs_list = self.cache.get_cache(name)
+            print()
             response = {f'As 10 musicas mais populares de {name}': eval(songs_list),
+                        'id':self.db.key,
                         'cache': cache_query_string}
 
         #se o registro ainda não existir no cache crie cache e salve no dynamodb
@@ -40,6 +42,7 @@ class Artist(Resource):
             popular_musics = self.songs_api.get_lyrics(name, music_number)
             self.db.insert_artists_songs(name, popular_musics)
             response = {f'As 10 musicas mais populares de {name}': popular_musics,
+                        'id':self.db.key,
                         'cache': cache_query_string}
             self.cache.add_cache(name, str(popular_musics))
 

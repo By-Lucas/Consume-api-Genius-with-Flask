@@ -61,7 +61,7 @@ class DynamoDB:
     # insert item
     def insert_artists_songs(self, artist_name, songs):
         """ insirir o nome e as músicas dos artistas no DynamoDB"""
-        table = self.dynamodb.Table('Artists')
+        table = self.dynamodb.Table('Artistas')
 
         try:
             table.put_item(Item={'id_transaction': self.key, 'artist': artist_name, 'songs': songs})
