@@ -1,17 +1,17 @@
+import re
 from controllers.genius import Genius
-from flask import Flask, request
+from flask import Flask, request, render_template
 from flask_restful import Resource, Api
 from models.dynamo_db import DynamoDB
-import json
+import json, requests, os
 from controllers.rediscache import RedisCache
-from controllers.env_config import DEBUG, FLASK_HOST, FLASK_PORT
+from controllers.env_config import DEBUG, FLASK_HOST, FLASK_PORT, GENIUS_TOKEN
 
 app = Flask(__name__)
 api = Api(app)
 
 
 class Artist(Resource):
-
     def __init__(self):
         """Iniciar class Genius, dynamoDB e RedisCache """
         self.songs_api = Genius()
@@ -57,6 +57,28 @@ class Artist(Resource):
         return response
 
 api.add_resource(Artist, '/artista/<name>')
+
+
+def search_artist():
+    artista =  request.form.get('nome')
+    base_url = "http://api.genius.com"
+    headers = {'Authorization': 'Bearer {}'.format(os.environ.get("GENIUS_TOKEN"))}
+    search_url = "{}/search?q={}".format(base_url, artista)
+    return requests.get(search_url, headers=headers).json()
+
+
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    artista = request.form.get('nome')
+    if artista != None:
+        response =  search_artist()
+        list_songs = []
+        for artistas in response['response']['hits']:
+            list_songs.append(artistas['result']['title'])
+        print(list_songs)
+        return render_template('index.html',artista=artista, list_songs=list_songs)
+    else:
+        return render_template('index.html')
 
 if __name__ == '__main__':
     app.run(FLASK_HOST, FLASK_PORT, DEBUG)

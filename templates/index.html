@@ -2,26 +2,36 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container">
-    <h1>{% block title %} Inicio {% endblock %}</h1>
-    <form action="buscar" method="POST">
-        <div class="col-md-3 mb-3">
-            <label for="buscar" class="form-label">Nome do artista</label>
-            <input name="nome" id="buscar" class="form-control" type="text" placeholder="Buscar artista">
-        <img src="{{url}}" alt="">
-        </div>
-        <div class="col-auto">
-            <button type="submit" class="btn btn-success col-md-2">Buscar</button>
-        </div>
-    
-        {% for artistas in posts %}
-            <div class='post'>
-                <p>ID: {{ artistas['id_transaction'] }}</p>
-                <h2>Artista: {{ artistas['artist'] }}</h2>
-                <p>Musicas: {{ artistas['songs'] }}</p>
+<style>
+    .centro{
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    }
+</style>
+<div class="container"  >
+   
+    <form  method="POST" >
+        <div class="row centro">
+            <div class="col-sm col-md-8" style="margin-bottom: 10px ;">
+                <h1 class="centro"> Cantor: {{artista}} </h1>
+                <input name="nome" id="buscar" class="form-control centro" type="text" placeholder="Buscar artista">
             </div>
-        {% endfor %}
-       
+            <div class="centro">
+                <button type="submit" class="btn btn-success centro col-md-6">Buscar</button>
+            </div>
+        {% if list_songs %}
+            {% for artistas in list_songs %}
+                <div class='post col-md-8'>
+                    <p>{{ artistas}}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class='post col-md-8'>
+                <p>Faça a busca de um artista</p>
+            </div>
+        {% endif %}
+    </div>
     </form>
 </div>
 {% endblock %}
