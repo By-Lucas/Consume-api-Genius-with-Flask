@@ -56,4 +56,11 @@ http://127.0.0.1:5000/artista/Nome_do_artista
 http://127.0.0.1:5000/artista/Nome_do_artista?cache=False
 ~~~
 
+**Se divirta bucando seu artista favorito**
+*Feito para interatividade*
+
+~~~ shell
+http://127.0.0.1:5000
+~~~
+
 <img src="files/img.png">
