@@ -3,8 +3,9 @@ import os
 from datetime import timedelta
 
 
-conextion_redis = redis.Redis(host=os.environ.get('FLASK_HOST'), 
-                                port=os.environ.get('FLASK_PORT'), db=0)
+
+
+conextion_redis = redis.Redis(host='localhost', port=6379, db=0)
 
 def definir_item(artist, items):
     dias = 7 # dias para expirar o cache
