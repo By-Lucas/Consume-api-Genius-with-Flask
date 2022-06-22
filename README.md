@@ -16,6 +16,10 @@ venv/scripts/activate
 pip install -r requirements.txt
 ~~~
 
+## Instalar Cache Redis no windows
+**Instalar o executavel `Redis-x64-3.0.504.msi` que está dentro da pasta files e seguir com passo a passo abaixo.**
+*Se utiliza outro sistema operacional, o link dos arquivos necessarios + informações: https://github.com/microsoftarchive/redis*
+
 ## Rodar aplicação e informações
 **No arquivo `teste.env` voce deve alterar-lo para `.env` e colocar as dependências dentro.**
 - `Criar Token no Genius e adcionar na parte GENIUS_TOKEN=`
